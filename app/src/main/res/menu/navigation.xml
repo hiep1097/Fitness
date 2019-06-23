@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_workouts"
+        android:icon="@drawable/ic_tapbar_0_default"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_custom"
+        android:icon="@drawable/ic_tapbar_1_default"
+        android:title="" />
+    <item
+        android:id="@+id/navigation_progress"
+        android:icon="@drawable/ic_tapbar_2_default"
+        android:title="" />
+</menu>

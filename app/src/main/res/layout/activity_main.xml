@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/tv_title_main"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:text="7M WORKOUT"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fr_home"
+        android:gravity="center_vertical"
+        android:textColor="#fff"
+        android:paddingLeft="@dimen/_10sdp"
+        />
+
+    <ImageView
+        android:id="@+id/btn_medal"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:src="@drawable/ic_bronze_medal"
+        android:layout_alignBottom="@+id/tv_title_main"
+        android:layout_alignTop="@+id/tv_title_main"
+        android:layout_alignParentRight="true"
+        />
+
+    <FrameLayout
+        android:id="@+id/fr_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_title_main"
+        android:layout_above="@+id/navigation"
+        />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?android:attr/windowBackground"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="@dimen/_40sdp"
+        app:menu="@menu/navigation"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

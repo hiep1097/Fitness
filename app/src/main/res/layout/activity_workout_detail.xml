@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ln_workout_detail"
+        android:focusableInTouchMode="true"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <RelativeLayout
+                android:id="@+id/rl_1_workout_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <ImageView
+                    android:id="@+id/img_workout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_135sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_7m_beginner" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    >
+                    <TextView
+                        android:id="@+id/tv_workout_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7M BEGINNER"
+                        android:textSize="@dimen/_25ssp"
+                        android:textColor="#fff"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_workout_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Beginner • 7 mins • 28 calories "
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="#fff"
+                        android:layout_below="@+id/tv_workout_name"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_workout_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="abc"
+                android:padding="@dimen/_10sdp"
+                android:background="#EEECDD"
+                android:layout_below="@+id/rl_1_workout_detail"
+                />
+            <TextView
+                android:id="@+id/tv_workout_exercises_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="14 EXERCISES"
+                android:padding="@dimen/_5sdp"
+                android:layout_below="@+id/tv_workout_description"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_exercise"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_workout_exercises_count"
+                >
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ln_workout_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_10sdp">
+
+        <Button
+            android:id="@+id/btn_start_workout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundrect_green"
+            android:text="Start"
+            android:textColor="#fff"
+            />
+    </LinearLayout>
+</RelativeLayout>
+

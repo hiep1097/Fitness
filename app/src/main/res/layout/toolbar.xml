@@ -1,0 +1,28 @@
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/tv_title_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STEP 1 OF 6"
+        android:textColor="#fff"
+        android:textSize="@dimen/_15ssp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:singleLine="true"
+        />
+    <TextView
+        android:id="@+id/tv_cancel_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_gravity="right"
+        android:textColor="#fff"
+        android:textSize="@dimen/_13ssp"
+        android:layout_marginRight="@dimen/_10sdp"
+        />
+</android.support.v7.widget.Toolbar>

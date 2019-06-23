@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "825246283155",
+    "firebase_url": "https://minutes-239515.firebaseio.com",
+    "project_id": "minutes-239515",
+    "storage_bucket": "minutes-239515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825246283155:android:b758860a41648413",
+        "android_client_info": {
+          "package_name": "com.example.hoang.fitness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825246283155-7h24jp4jl5mia6brg39q08aj6lgt0uj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hoang.fitness",
+            "certificate_hash": "390ce21fa55062bda793912ed0f241b945658efa"
+          }
+        },
+        {
+          "client_id": "825246283155-nvpb4fuf3g1hrvkep4nidrgs4c3ki803.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxBo83V7kqZYuWW38kyu1oMp45nZ9ypcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825246283155-nvpb4fuf3g1hrvkep4nidrgs4c3ki803.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

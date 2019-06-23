@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_item_exercise"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingRight="@dimen/_10sdp"
+    >
+
+    <ImageView
+        android:id="@+id/img_item_pick_exercise"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_65sdp"
+        android:src="@drawable/abdominal_crunch"
+        android:scaleType="fitXY"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/img_choose_exercise"
+        />
+    <TextView
+        android:id="@+id/tv_name_item_pick_exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STEP JACK"
+        android:textColor="#000"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/img_item_pick_exercise"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toLeftOf="@+id/btn_pick_exercise_info"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:maxLines="1"
+        />
+
+    <Button
+        android:id="@+id/btn_pick_exercise_info"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_creatworkout_adjust" />
+</RelativeLayout>

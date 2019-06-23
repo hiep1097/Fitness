@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rateus_bg_1"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_98sdp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:src="@drawable/img_rateus_star" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="WORKOUT COMPLETE!"
+        android:textColor="#fff"
+        android:textSize="@dimen/_20ssp" />
+
+    <TextView
+        android:id="@+id/tv_workout_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="7M BEGINNER"
+        android:textColor="#99ffffff"
+        android:textSize="@dimen/_12ssp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_exercise_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="14"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="@dimen/_25ssp" />
+
+            <TextView
+                android:id="@+id/tv_exercise_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="EXERCISES"
+                android:textAlignment="center"
+                android:textColor="#99ffffff"
+                android:textSize="@dimen/_13ssp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:background="#99ffffff" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_minute_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="7"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="@dimen/_25ssp" />
+
+            <TextView
+                android:id="@+id/tv_minute_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="MINUTES"
+                android:textAlignment="center"
+                android:textColor="#99ffffff"
+                android:textSize="@dimen/_13ssp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:background="#99ffffff" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_calories_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="28"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="@dimen/_25ssp" />
+
+            <TextView
+                android:id="@+id/tv_calories_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="CALORIES"
+                android:textAlignment="center"
+                android:textColor="#99ffffff"
+                android:textSize="@dimen/_13ssp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_save_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/round_save_btn"
+        android:gravity="center_horizontal"
+        android:onClick="onClick">
+
+        <TextView
+            android:id="@+id/tv_save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:includeFontPadding="false"
+            android:text="SAVE"
+            android:textColor="#fff"
+            android:textSize="@dimen/_18ssp" />
+    </RelativeLayout>
+</LinearLayout>

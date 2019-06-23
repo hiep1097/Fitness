@@ -1,0 +1,71 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/ln1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_25sdp"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:text="Total: "
+            android:gravity="center_vertical"
+            android:textColor="#000"
+            android:textSize="@dimen/_17ssp"
+            />
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_coin"
+            />
+        <TextView
+            android:id="@+id/tv_total_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:text=" 20000"
+            android:gravity="center_vertical"
+            android:textColor="#FFAB00"
+            android:textSize="@dimen/_17ssp"
+            />
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_medal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ln1"
+        >
+    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/lnBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+        <Button
+            android:id="@+id/btnChoose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lựa chọn"
+            android:layout_weight="1"
+            android:background="@drawable/roundrect_green"
+            android:layout_margin="@dimen/_15sdp"
+            android:textColor="#fff"
+            />
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thoát"
+            android:layout_weight="1"
+            android:background="@drawable/roundrect_green"
+            android:layout_margin="@dimen/_15sdp"
+            android:textColor="#fff"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

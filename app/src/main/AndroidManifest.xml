@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.hoang.fitness">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="7 MINUTE"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider339852706880082"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+        <activity android:name=".activities.SigninActivity"
+            android:launchMode="singleTop"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.SignupActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.SigninActivity"
+            >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".activities.TestActivity"
+            android:launchMode="singleTop"
+            >
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".activities.MainActivity"
+            android:launchMode="singleTop"
+            >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".activities.WorkoutDetailActivity"
+            android:parentActivityName=".activities.MainActivity"
+            >
+        </activity>
+        <activity android:name=".activities.WorkoutDetailActivity2"
+            android:parentActivityName=".activities.MainActivity"
+            >
+        </activity>
+        <activity android:name=".activities.ExerciseDescriptionActivity">
+        </activity>
+        <activity android:name=".activities.PickExerciseActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:launchMode="singleTop"
+            >
+        </activity>
+        <activity android:name=".activities.PlayingActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
+            >
+        </activity>
+        <activity android:name=".activities.FinishActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:launchMode="singleTop"
+            >
+        </activity>
+        <activity android:name=".activities.DetailTargetActivity">
+        </activity>
+        <activity android:name=".activities.AlertDialogActivity"
+            android:theme="@android:style/Theme.Material.Dialog.Alert"
+            >
+        </activity>
+        <activity android:name=".activities.SettingActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity"
+            >
+        </activity>
+        <activity android:name=".activities.MedalActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity"
+            >
+        </activity>
+        <receiver android:name=".receiver.AlarmReceiver">
+        </receiver>
+    </application>
+</manifest>

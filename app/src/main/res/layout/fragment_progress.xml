@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_top_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/_8sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/switch_bar_background"
+            android:orientation="horizontal"
+            android:padding="@dimen/_1sdp">
+
+            <RelativeLayout
+                android:id="@+id/rl_calendar_bar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/switch_bar_custom_left"
+                >
+
+                <TextView
+                    android:id="@+id/tv_calandar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="CALENDAR"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_12ssp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_target_bar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/switch_bar_custom_right"
+                >
+
+                <TextView
+                    android:id="@+id/tv_target"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="TARGET"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/_12ssp"
+                    />
+            </RelativeLayout>
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/rl_weight_bar"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/switch_bar_custom_right">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_weight"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:text="WEIGHT"-->
+                    <!--android:textColor="#fff"-->
+                    <!--android:textSize="@dimen/_12ssp" />-->
+            <!--</RelativeLayout>-->
+        </LinearLayout>
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/place_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_top_activity_main"
+        >
+    </FrameLayout>
+</RelativeLayout>
