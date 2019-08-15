@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,8 +20,14 @@ import com.example.hoang.fitness.models.CustomWorkout;
 import com.example.hoang.fitness.models.Exercise;
 import com.example.hoang.fitness.models.Workout;
 import com.example.hoang.fitness.sound.SoundManager;
-import com.example.hoang.fitness.utils.FileUtil;
 import com.example.hoang.fitness.utils.JsonUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +78,7 @@ public class PlayingActivity extends AppCompatActivity implements View.OnClickLi
     Thread thread;
     SoundManager soundManager;
     MediaPlayer mediaPlayer;
-    List<CustomWorkout> customWorkouts;
+    List<CustomWorkout> customWorkouts = new ArrayList<>();
     CustomWorkout workout;
 
     @Override
@@ -95,14 +102,8 @@ public class PlayingActivity extends AppCompatActivity implements View.OnClickLi
             WORKOUT_NAME = "";
         }
         if (!WORKOUT_NAME.isEmpty()){
-            customWorkouts = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
-            for (int i=0; i<customWorkouts.size();i++)
-                if (WORKOUT_NAME.equals(customWorkouts.get(i).getName())) {
-                    workout = customWorkouts.get(i);
-                    List<Exercise> list = JsonUtil.getInstance().getListExercise(this,workout);
-                    for (int j=0;j<workout.getCircuit();j++) this.list.addAll(list);
-                    break;
-                }
+//            customWorkouts = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
+            getListCustomWorkoutFromFireBase();
         } else {
             workout = new CustomWorkout();
             Workout w = JsonUtil.getInstance().getWorkout(this, WORKOUT_ID);
@@ -120,7 +121,40 @@ public class PlayingActivity extends AppCompatActivity implements View.OnClickLi
             workout.setTime(w.getTime());
             workout.setType(w.getType());
             workout.setWorkoutRestTime(0);
+            updateValue();
+            updateView();
+            mExit.setOnClickListener(this::onClick);
+            mDetail.setOnClickListener(this::onClick);
+            mVolume.setOnClickListener(this::onClick);
+            mPrevious.setOnClickListener(this::onClick);
+            mPause.setOnClickListener(this::onClick);
+            mPlay.setOnClickListener(this::onClick);
+            mNext.setOnClickListener(this::onClick);
+            try {
+                if (thread==null){
+                    thread = new Thread(this::run);
+                    thread.start();
+                }
+            } catch (Exception e){
+                thread = new Thread(this::run);
+                thread.start();
+            }
         }
+
+
+
+    }
+
+    public void solve(List<CustomWorkout> list1){
+        customWorkouts.clear();
+        customWorkouts.addAll(list1);
+        for (int i=0; i<customWorkouts.size();i++)
+            if (WORKOUT_NAME.equals(customWorkouts.get(i).getName())) {
+                workout = customWorkouts.get(i);
+                List<Exercise> list = JsonUtil.getInstance().getListExercise(this,workout);
+                for (int j=0;j<workout.getCircuit();j++) this.list.addAll(list);
+                break;
+            }
         updateValue();
         updateView();
         mExit.setOnClickListener(this::onClick);
@@ -139,8 +173,30 @@ public class PlayingActivity extends AppCompatActivity implements View.OnClickLi
             thread = new Thread(this::run);
             thread.start();
         }
+    }
 
+    public void getListCustomWorkoutFromFireBase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("customWorkouts");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<CustomWorkout> list = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    CustomWorkout value = data.getValue(CustomWorkout.class);
+                    list.add(value);
+                }
+                solve(list);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void updateView() {

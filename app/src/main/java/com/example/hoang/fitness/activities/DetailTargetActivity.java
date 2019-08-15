@@ -1,9 +1,9 @@
 package com.example.hoang.fitness.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -12,7 +12,13 @@ import android.widget.TextView;
 import com.example.hoang.fitness.R;
 import com.example.hoang.fitness.adapters.TargetAdapter;
 import com.example.hoang.fitness.models.Target;
-import com.example.hoang.fitness.utils.FileUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +54,11 @@ public class DetailTargetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_target);
         ButterKnife.bind(this);
-        list = FileUtil.docFileTarget(this,"target.txt");
+        //list = FileUtil.docFileTarget(this,"target.txt");
+        getListTargetFromFireBase();
+    }
+
+    private void solve() {
         TARGET_NAME = getIntent().getStringExtra("TARGET_NAME");
         for (int i=0;i<list.size();i++){
             if (list.get(i).getName().equals(TARGET_NAME)) {
@@ -57,7 +67,7 @@ public class DetailTargetActivity extends AppCompatActivity {
                 break;
             }
         }
-        mName.setText("abc");
+        mName.setText(target.getName());
         mTime.setText(target.getHour()+":"+target.getMinute()+" "+target.getAm_pm());
         if (target.getState()==0){
             mState.setText("Bắt đầu");
@@ -93,7 +103,8 @@ public class DetailTargetActivity extends AppCompatActivity {
         mHuy.setOnClickListener(l->{
             target.setState(-1);
             list.set(vt,target);
-            FileUtil.ghiFileTarget(this,list);
+            //FileUtil.ghiFileTarget(this,list);
+            addTargetToFireBase(target);
             finish();
             TargetAdapter.instance.update();
         });
@@ -105,5 +116,44 @@ public class DetailTargetActivity extends AppCompatActivity {
 
     private void changeProgress(ProgressBar progressBar, int i) {
         progressBar.setProgress(getProgressValue(i));
+    }
+
+    public void updateListTarget(List<Target> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        solve();
+    }
+
+    public void getListTargetFromFireBase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Target> list = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Target value = data.getValue(Target.class);
+                    list.add(value);
+                }
+                updateListTarget(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void addTargetToFireBase(Target target) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.child(target.getName()).setValue(target);
     }
 }

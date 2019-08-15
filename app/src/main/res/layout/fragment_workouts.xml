@@ -16,6 +16,7 @@
             >
         </android.support.v7.widget.RecyclerView>
         <LinearLayout
+            android:id="@+id/btn_logout"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_25sdp"
             android:background="@drawable/roundrect_grey"
@@ -25,10 +26,9 @@
             android:layout_marginBottom="@dimen/_10sdp"
             >
             <TextView
-                android:id="@+id/btn_feedback"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Got feedback or question? Let us know!"
+                android:text="Log out"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="@dimen/_10ssp"

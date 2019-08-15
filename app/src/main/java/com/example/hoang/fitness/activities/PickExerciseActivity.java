@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hoang.fitness.R;
 import com.example.hoang.fitness.adapters.PickExerciseAdapter;
@@ -26,7 +25,6 @@ import com.example.hoang.fitness.models.Exercise;
 import com.example.hoang.fitness.models.ExercisePick;
 import com.example.hoang.fitness.models.Workout;
 import com.example.hoang.fitness.models.WorkoutExercise;
-import com.example.hoang.fitness.utils.FileUtil;
 import com.example.hoang.fitness.utils.JsonUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -367,10 +365,11 @@ public class PickExerciseActivity extends AppCompatActivity implements View.OnCl
             rest = 15;
             updateMin();
         } else if (v==mSaveWorkout){
-            //addCustomWorkoutToFireBase(createWorkout());
-            List<CustomWorkout> list = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
-            list.add(createWorkout());
-            FileUtil.ghiFileCustomWorkout(this,list);
+            addCustomWorkoutToFireBase(createWorkout());
+            //List<CustomWorkout> list = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
+
+            //list.add(createWorkout());
+            //FileUtil.ghiFileCustomWorkout(this,list);
             try{
 
             } catch (Exception e){

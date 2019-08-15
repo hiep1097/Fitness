@@ -13,7 +13,13 @@ import com.example.hoang.fitness.R;
 import com.example.hoang.fitness.listener.ItemOnClick;
 import com.example.hoang.fitness.models.Medal;
 import com.example.hoang.fitness.utils.DrawableUtil;
-import com.example.hoang.fitness.utils.SharedPrefsUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -30,7 +36,7 @@ public class MedalAdapter extends RecyclerView.Adapter<MedalAdapter.ViewHolder> 
         this.context = context;
         this.arrayList = arrayList;
         this.itemOnClick = itemOnClick;
-        wallpaperPos = SharedPrefsUtils.getIntegerPreference(context,"medalpos",0);
+        readMedalPosFromFireBase();
     }
 
     @NonNull
@@ -94,6 +100,31 @@ public class MedalAdapter extends RecyclerView.Adapter<MedalAdapter.ViewHolder> 
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    private void readMedalPosFromFireBase(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myMedalPosRef = currentUserDB.child("medalpos");
+        myMedalPosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    long currentPos = (long) dataSnapshot.child("MEDAL_POS").getValue();
+                    wallpaperPos = (int) currentPos;
+                    notifyDataSetChanged();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

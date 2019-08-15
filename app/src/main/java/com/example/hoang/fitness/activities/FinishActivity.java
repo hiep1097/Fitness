@@ -20,7 +20,6 @@ import com.example.hoang.fitness.models.CustomWorkout;
 import com.example.hoang.fitness.models.Exercise;
 import com.example.hoang.fitness.models.Target;
 import com.example.hoang.fitness.models.Workout;
-import com.example.hoang.fitness.utils.FileUtil;
 import com.example.hoang.fitness.utils.JsonUtil;
 import com.example.hoang.fitness.utils.SharedPrefsUtils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,14 +61,19 @@ public class FinishActivity extends AppCompatActivity {
     int BEST_STREAK_NUM=0;
     int CUR_STREAK = 0;
     int BEST_STREAK = 0;
-    List<CustomWorkout> customWorkouts;
+    List<CustomWorkout> customWorkouts = new ArrayList<>();
     CustomWorkout workout;
     List<Exercise> list1 = new ArrayList<>();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference myCoinsRef;
+    int totalCoint=0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish);
         ButterKnife.bind(this);
+        accessDBFireBase();
+        readCoinsFromFireBase();
         WORKOUT_ID = getIntent().getIntExtra("WORKOUT_ID", 0);
         WORKOUT_NAME = getIntent().getStringExtra("WORKOUT_NAME");
         TARGET_NAME = getIntent().getStringExtra("TARGET_NAME");
@@ -79,14 +83,8 @@ public class FinishActivity extends AppCompatActivity {
             WORKOUT_NAME = "";
         }
         if (!WORKOUT_NAME.isEmpty()){
-            customWorkouts = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
-            for (int i=0; i<customWorkouts.size();i++)
-                if (WORKOUT_NAME.equals(customWorkouts.get(i).getName())) {
-                    workout = customWorkouts.get(i);
-                    List<Exercise> list = JsonUtil.getInstance().getListExercise(this,workout);
-                    for (int j=0;j<workout.getCircuit();j++) this.list1.addAll(list);
-                    break;
-                }
+            //customWorkouts = FileUtil.docFileCustomWorkout(this,"customworkout.txt");
+            getListCustomWorkoutFromFireBase();
         } else {
             workout = new CustomWorkout();
             Workout w = JsonUtil.getInstance().getWorkout(this, WORKOUT_ID);
@@ -104,7 +102,12 @@ public class FinishActivity extends AppCompatActivity {
             workout.setTime(w.getTime());
             workout.setType(w.getType());
             workout.setWorkoutRestTime(0);
+            xxx();
         }
+
+    }
+
+    private void xxx(){
         mName.setText(workout.getName());
         mNum.setText(workout.getExercises().size()+"");
         mMin.setText(workout.getTime()+"");
@@ -126,38 +129,28 @@ public class FinishActivity extends AppCompatActivity {
 //                SharedPrefsUtils.setIntegerPreference(FinishActivity.this,"BEST_STREAK_NUM",BEST_STREAK_NUM);
                 addResultToFireBase();
                 if (TARGET_NAME!=null){
-                    list = FileUtil.docFileTarget(FinishActivity.this,"target.txt");
-                    TARGET_NAME = getIntent().getStringExtra("TARGET_NAME");
-                    for (int i=0;i<list.size();i++){
-                        if (list.get(i).getName().equals(TARGET_NAME)) {
-                            target = list.get(i);
-                            vt = i;
-                            break;
-                        }
-                    }
-                    target.setState(target.getState()+1);
-                    list.set(vt,target);
-                    FileUtil.ghiFileTarget(FinishActivity.this,list);
-                    try {
-                        TargetAdapter.instance.update();
-                    } catch (Exception e){
-
-                    }
-                    if (target.getState()==target.getNumDay()){
-                        TargetFragment.alarmManager.cancel(
-                                TargetFragment.pendingIntent[vt]
-                        );
-                        congrateDialog();
-                        tangcoinDialog();
-                    } else {
-                        tangcoinDialog();
-                    }
+                    //list = FileUtil.docFileTarget(FinishActivity.this,"target.txt");
+                    getListTargetFromFireBase();
                 } else {
                     tangcoinDialog();
                 }
             }
         });
     }
+
+    private void solve(List<CustomWorkout> list1) {
+        customWorkouts.clear();
+        customWorkouts.addAll(list1);
+        for (int i=0; i<customWorkouts.size();i++)
+            if (WORKOUT_NAME.equals(customWorkouts.get(i).getName())) {
+                workout = customWorkouts.get(i);
+                List<Exercise> list = JsonUtil.getInstance().getListExercise(this,workout);
+                for (int j=0;j<workout.getCircuit();j++) this.list1.addAll(list);
+                break;
+            }
+        xxx();
+    }
+
     private void calCurStreakNum(){
         CUR_STREAK = 0;
         ArrayList<Integer> listDay = getListDay();
@@ -276,26 +269,6 @@ public class FinishActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void tangcoinDialog(){
-        int totalCoins = SharedPrefsUtils.getIntegerPreference(this,"totalcoin",0);
-        SharedPrefsUtils.setIntegerPreference(this,"totalcoin",totalCoins+workout.getCalorie()*10);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder
-                .setTitle("Congratulate!")
-                .setMessage("Chúc mừng bạn đã được tặng "+workout.getCalorie()*10+" coins!")
-                .setCancelable(false)
-                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        startActivity(new Intent(FinishActivity.this, MainActivity.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        finish();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
     private void readResultFromFireBase(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -348,5 +321,150 @@ public class FinishActivity extends AppCompatActivity {
         myRef.child("BEST_STREAK_NUM").setValue(BEST_STREAK);
         Log.d("CUR_STREAK",CUR_STREAK+" 5");
         Toast.makeText(FinishActivity.this,"Added",Toast.LENGTH_SHORT).show();
+    }
+
+    public void tangcoinDialog(){
+        addCoinsToFireBase(workout.getCalorie()*10);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setTitle("Congratulate!")
+                .setMessage("Chúc mừng bạn đã được tặng "+workout.getCalorie()*10+" coins!")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        startActivity(new Intent(FinishActivity.this, MainActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void readCoinsFromFireBase(){
+        myCoinsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    long totalCoint = (long) dataSnapshot.child("NUM_COINS").getValue();
+                    FinishActivity.this.totalCoint = (int) totalCoint;
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addCoinsToFireBase(int x){
+        myCoinsRef.child("NUM_COINS").setValue(totalCoint+x);
+    }
+
+    private void accessDBFireBase(){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        myCoinsRef = currentUserDB.child("coins");
+    }
+
+    public void getListCustomWorkoutFromFireBase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("customWorkouts");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<CustomWorkout> list = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    CustomWorkout value = data.getValue(CustomWorkout.class);
+                    list.add(value);
+                }
+                solve(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getListTargetFromFireBase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Target> list = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Target value = data.getValue(Target.class);
+                    list.add(value);
+                }
+                solve2(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void addTargetToFireBase(Target target) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.child(target.getName()).setValue(target);
+    }
+
+    int count = 0;
+
+    private void solve2(List<Target> list1) {
+        list.clear();
+        list.addAll(list1);
+        TARGET_NAME = getIntent().getStringExtra("TARGET_NAME");
+        for (int i=0;i<list.size();i++){
+            if (list.get(i).getName().equals(TARGET_NAME)) {
+                target = list.get(i);
+                vt = i;
+                count++;
+                break;
+            }
+        }
+
+        if (count==1){
+            target.setState(target.getState()+1);
+            list.set(vt,target);
+            //FileUtil.ghiFileTarget(FinishActivity.this,list);
+            addTargetToFireBase(target);
+            try {
+                TargetAdapter.instance.update();
+            } catch (Exception e){
+
+            }
+            if (target.getState()==target.getNumDay()){
+                TargetFragment.alarmManager.cancel(
+                        TargetFragment.pendingIntent[vt]
+                );
+                congrateDialog();
+                tangcoinDialog();
+            } else {
+                tangcoinDialog();
+            }
+        }
+
     }
 }

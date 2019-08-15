@@ -25,14 +25,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.hoang.fitness.R;
 import com.example.hoang.fitness.adapters.TargetAdapter;
 import com.example.hoang.fitness.models.Target;
 import com.example.hoang.fitness.models.Workout;
 import com.example.hoang.fitness.receiver.AlarmReceiver;
-import com.example.hoang.fitness.utils.FileUtil;
 import com.example.hoang.fitness.utils.JsonUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -80,8 +78,8 @@ public class TargetFragment extends Fragment implements View.OnClickListener {
             arr[i] = JsonUtil.getInstance().getListWorkout(getContext()).get(i).getName();
         }
         setDialogTarget();
-        list = FileUtil.docFileTarget(getActivity(),"target.txt");
-        //getListTargetFromFireBase();
+        //list = FileUtil.docFileTarget(getActivity(),"target.txt");
+        getListTargetFromFireBase();
         adapter = new TargetAdapter(getContext(), list);
         mTargets.setAdapter(adapter);
         mTargets.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -103,7 +101,7 @@ public class TargetFragment extends Fragment implements View.OnClickListener {
             dialogTarget.show();
         } else if (v == mDongy) {
             addTarget();
-            FileUtil.ghiFileTarget(getActivity(), list);
+            //FileUtil.ghiFileTarget(getActivity(), list);
             dialogTarget.dismiss();
         } else if (v == mCancel) {
             dialogTarget.dismiss();
@@ -180,9 +178,10 @@ public class TargetFragment extends Fragment implements View.OnClickListener {
                     list.size(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                     pendingIntent[list.size() - 1]);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(), 3600 * 24 * 1000, pendingIntent[list.size() - 1]);
-            //addTargetToFireBase(target);
+//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+//                    calendar.getTimeInMillis(), 3600 * 24 * 1000, pendingIntent[list.size() - 1]);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent[list.size() - 1]);
+            addTargetToFireBase(target);
         } catch (Exception e) {
 
         }
@@ -225,7 +224,6 @@ public class TargetFragment extends Fragment implements View.OnClickListener {
                     list.add(value);
                 }
                 updateListTarget(list);
-                Toast.makeText(getContext(),"Loaded",Toast.LENGTH_SHORT).show();
             }
 
             @Override

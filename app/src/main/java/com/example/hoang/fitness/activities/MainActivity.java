@@ -17,11 +17,12 @@ import com.example.hoang.fitness.fragments.WorkoutsFragment;
 import com.example.hoang.fitness.utils.DrawableUtil;
 import com.example.hoang.fitness.utils.SharedPrefsUtils;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int TAB_CUSTOM = 1;
     public static final int TAB_PROGRESS = 2;
     private List<Fragment> listFragment;
+    private FirebaseUser user;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mMedal = findViewById(R.id.btn_medal);
         try {
-            String medal = SharedPrefsUtils.getStringPreference(this,"medal");
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            String medal = SharedPrefsUtils.getStringPreference(this,user.getUid()+"medal");
             mMedal.setImageDrawable(DrawableUtil.getInstance().getDrawable(this,medal));
         } catch (Exception e){
 

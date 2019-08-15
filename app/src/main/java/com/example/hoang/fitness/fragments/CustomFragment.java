@@ -12,13 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hoang.fitness.R;
 import com.example.hoang.fitness.activities.PickExerciseActivity;
 import com.example.hoang.fitness.adapters.CustomWorkoutAdapter;
 import com.example.hoang.fitness.models.CustomWorkout;
-import com.example.hoang.fitness.utils.FileUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,9 +46,8 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_custom, container, false);
         ButterKnife.bind(this,view);
         getActivity().findViewById(R.id.tv_title_main).setVisibility(View.GONE);
-        //getActivity().findViewById(R.id.btn_setting).setVisibility(View.GONE);
-        //getListCustomWorkoutFromFireBase();
-        list = FileUtil.docFileCustomWorkout(this.getContext(),"customworkout.txt");
+        getListCustomWorkoutFromFireBase();
+        //list = FileUtil.docFileCustomWorkout(this.getContext(),"customworkout.txt");
         adapter = new CustomWorkoutAdapter(getContext(),list);
         mCustomWorkouts.setAdapter(adapter);
         mCustomWorkouts.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
@@ -65,7 +62,8 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onStart() {
-        List<CustomWorkout> list = FileUtil.docFileCustomWorkout(this.getContext(),"customworkout.txt");
+        //List<CustomWorkout> list = FileUtil.docFileCustomWorkout(this.getContext(),"customworkout.txt");
+        getListCustomWorkoutFromFireBase();
         updateListCustomWorkout(list);
         super.onStart();
     }
@@ -97,7 +95,6 @@ public class CustomFragment extends Fragment implements View.OnClickListener {
                     list.add(value);
                 }
                 updateListCustomWorkout(list);
-                Toast.makeText(getContext(),"Loaded",Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -15,7 +15,15 @@ import com.example.hoang.fitness.activities.DetailTargetActivity;
 import com.example.hoang.fitness.fragments.TargetFragment;
 import com.example.hoang.fitness.models.Target;
 import com.example.hoang.fitness.utils.FileUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -82,7 +90,13 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     }
 
     public void update(){
-        arrayList = FileUtil.docFileTarget(context,"target.txt");
+        //arrayList = FileUtil.docFileTarget(context,"target.txt");
+        getListTargetFromFireBase();
+    }
+
+    public void updateList(List<Target> list){
+        arrayList.clear();
+        arrayList.addAll(list);
         instance.notifyDataSetChanged();
     }
 
@@ -109,5 +123,38 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public void getListTargetFromFireBase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Target> list = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Target value = data.getValue(Target.class);
+                    list.add(value);
+                }
+                updateList(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void addTargetToFireBase(Target target) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("users");
+        DatabaseReference currentUserDB = databaseReference.child(user.getUid());
+        DatabaseReference myRef = currentUserDB.child("targets");
+        myRef.child(target.getName()).setValue(target);
     }
 }

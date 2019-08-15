@@ -128,14 +128,14 @@ public class FileUtil {
         }
     }
 
-    public static void initMedal(Context context){
-        List<Medal> list = new ArrayList<>();
-        list.add(new Medal(0,"ic_bronze_medal",0, true));
-        list.add(new Medal(1,"ic_silver_medal",1000, false));
-        list.add(new Medal(2,"ic_gold_medal",2000, false));
-        list.add(new Medal(3,"ic_ta_dong",500, false));
-        list.add(new Medal(4,"ic_ta_bac",1000,false));
-        list.add(new Medal(5,"ic_ta_vang",2000, false));
-        ghiFileMedal(context,list);
-    }
+//    public static void initMedal(Context context){
+//        List<Medal> list = new ArrayList<>();
+//        list.add(new Medal(0,"ic_bronze_medal",0, true));
+//        list.add(new Medal(1,"ic_silver_medal",1000, false));
+//        list.add(new Medal(2,"ic_gold_medal",2000, false));
+//        list.add(new Medal(3,"ic_ta_dong",500, false));
+//        list.add(new Medal(4,"ic_ta_bac",1000,false));
+//        list.add(new Medal(5,"ic_ta_vang",2000, false));
+//        ghiFileMedal(context,list);
+//    }
 }

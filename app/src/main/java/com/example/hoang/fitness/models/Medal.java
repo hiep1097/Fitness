@@ -3,23 +3,25 @@ package com.example.hoang.fitness.models;
 import java.io.Serializable;
 
 public class Medal implements Serializable {
-    private int id;
+    private String id;
     private String image;
     private int price;
     private boolean daMua;
 
-    public Medal(int id, String image, int price, boolean daMua) {
-        this.id = id;
+    public Medal() {
+    }
+
+    public Medal(String image, int price, boolean daMua) {
         this.image = image;
         this.price = price;
         this.daMua = daMua;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
